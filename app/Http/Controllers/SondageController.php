@@ -32,8 +32,10 @@ class SondageController extends Controller {
 	 */
 	public function getIndex() 
 	{
-		// Ici on doit retourner la vue "index" en lui transmettant un paramètre "sondage" contenant les sondage
-		// C'est la méthode "getSondages" de la gestion qui est chargée de livrer les éléments de ces sondages
+            // Ici on doit retourner la vue "index" en lui transmettant un paramètre "sondage" contenant les sondage
+            // C'est la méthode "getSondages" de la gestion qui est chargée de livrer les éléments de ces sondages
+            $sondages = $this->sondageGestion->getSondages();
+            return view('index')->withSondages($sondages);
 	}
 
 	/**
@@ -47,6 +49,8 @@ class SondageController extends Controller {
 		// Ici on doit envoyer la vue "sondage" qui contient le formulaire du sondage
 		// C'est la méthode "getSondage" de la gestion qui est chargée de livrer les informations du sondage
 		// On doit transmettre 2 paramètres à la vue : "sondage" pour les informations du sondage et "nom" pour le nom du sondage
+                $sondage = $this->sondageGestion->getSondage($nom);
+                return view('sondage', compact('sondage','nom'));
 	}
 
 	/**
@@ -68,12 +72,16 @@ class SondageController extends Controller {
 			// - "sondage" pour les informations du sondage 
 			// - "resultats" pour les résultats du sondage 
 			// - "nom" pour le nom du sondage
+                        $sondage = $this->sondageGestion->getSondage($nom);
+                        $resultats = $this->sondageGestion->getResults($nom);
+                        return view('resultats',compact('sondage','resultats','nom'));
 		}
 
 		// Ici comme l'Email a déjà été utilisé on doit rediriger sur la même requête avec la méthode "back" de la classe Redirect
 		// On doit transmettre en session flash avec le nom "error" l'informations
 		// "Désolé mais cet Email a déjà été utilisé pour ce sondage !"
 		// On doit transmettre aussi les anciennes saisies
+                return redirect()->back()->with('error','Désolé mais cet Email a déjà été utilisé pour ce sondage !');
 	}
 
 }
