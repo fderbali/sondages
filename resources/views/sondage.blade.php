@@ -33,7 +33,7 @@
 		</div>
 
 		<!-- Bouton de retour à la page précédente -->
-		<a href="javascript:history.back()" class="btn btn-primary">
+		<a href="{{ action('SondageController@getIndex') }}" class="btn btn-primary">
 			<span class="glyphicon glyphicon-circle-arrow-left"></span> Retour
 		</a>
 		
